@@ -12,3 +12,4 @@ skip_install: False
 
 # flag to track restart requirement during reconfigure
 monasca_influxdb_restart_required: false
+
