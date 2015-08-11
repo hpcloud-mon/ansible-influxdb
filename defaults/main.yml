@@ -11,4 +11,6 @@ influxdb_use_apt: false
 # Url to find the influxdb deb, the deb name/version is appended, only used if not using apt
 influxdb_deb_src_url: http://s3.amazonaws.com/influxdb
 
+influxdb_log_dir: /var/log/influxdb
+
 skip_install: False
