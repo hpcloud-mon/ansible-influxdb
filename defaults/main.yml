@@ -1,3 +1,5 @@
+# ©Copyright 2015 Hewlett-Packard Development Company, L.P.
+
 influxdb_client_port: 8086
 influxdb_raft_port: 8088
 influxdb_hostname: "{{ ansible_default_ipv4.address }}"
