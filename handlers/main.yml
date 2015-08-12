@@ -1,2 +1,4 @@
+# ©Copyright 2015 Hewlett-Packard Development Company, L.P.
+
 - name: restart influxdb
   service: name=influxdb state=restarted
