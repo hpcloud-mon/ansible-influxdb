@@ -1,11 +1,6 @@
-influxdb:
-  raft_port: 8090
-  seed_servers: [ ]
-  replication_factor: 1
-
 influxdb_client_port: 8086
+influxdb_raft_port: 8088
 influxdb_hostname: "{{ ansible_default_ipv4.address }}"
-influxdb_bind_address: 0.0.0.0
 
 influxdb_use_apt: false
 # Url to find the influxdb deb, the deb name/version is appended, only used if not using apt
@@ -13,4 +8,17 @@ influxdb_deb_src_url: http://s3.amazonaws.com/influxdb
 
 influxdb_log_dir: /var/log/influxdb
 
+influxdb_versions:
+  RedHat: 0.9.1-1
+  Debian: 0.9.1
+
+influxdb_version: "{{ influxdb_versions[ansible_os_family] }}"
+
+run_mode: Deploy
 skip_install: False
+
+download_tmp_dir: /opt/monasca_download_dir
+
+# matches user,group from package startup script
+influx_db_user: "influxdb"
+influx_db_group: "influxdb"

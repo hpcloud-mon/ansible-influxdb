@@ -1,6 +1,3 @@
-- name: Create download directory
-  file: path="{{ download_tmp_dir }}" state=directory recurse=yes
-
 - name: Fetch package
   get_url: url={{influxdb_deb_src_url}}/influxdb-{{ influxdb_version }}.x86_64.rpm
            dest={{ download_tmp_dir }}/influxdb-{{ influxdb_version }}.x86_64.rpm
@@ -8,6 +5,15 @@
   until: get_url_result.state == 'file'
   retries: 5
   delay: 1
+
+- name: Set owner and group for influxdb package
+  file:
+    path="{{ download_tmp_dir }}/influxdb-{{ influxdb_version }}.x86_64.rpm"
+    state=file
+    owner={{ influx_db_user }}
+    group={{ influx_db_group }}
+    mode=640
+  when: not influxdb_use_apt
 
 - name: Install package
   yum: name="{{ download_tmp_dir }}"/influxdb-{{ influxdb_version }}.x86_64.rpm state=present

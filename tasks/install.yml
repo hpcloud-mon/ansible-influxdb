@@ -1,4 +1,9 @@
 ---
+# Copyright 2015 FUJITSU LIMITED
+# file: tasks/install.yml
+
+- include: userGroup.yml
+
 - include: DebianInst.yml
   when: "ansible_os_family == 'Debian'"
 
