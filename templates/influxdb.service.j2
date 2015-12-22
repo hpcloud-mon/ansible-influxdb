@@ -1,0 +1,14 @@
+[Unit]
+Description=InfluxDB is an open-source, distributed, time series database
+After=network.target
+
+[Service]
+User={{ influx_db_user }}
+Group={{ influx_db_group }}
+LimitNOFILE=65536
+EnvironmentFile=-/etc/default/influxdb
+ExecStart=/opt/influxdb/influxd -config /etc/opt/influxdb/influxdb.conf $INFLUXD_OPTS
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
