@@ -5,7 +5,7 @@
     dest=/etc/opt/influxdb/influxdb.conf
     owner="{{ influx_db_user }}"
     group="{{ influx_db_group }}"
-    mode=640
+    mode=0640
   when: influxdb_version|version_compare('0.9', '>=')
   notify:
     - restart influxdb
@@ -16,7 +16,7 @@
     dest=/etc/default/influxdb
     owner="{{ influx_db_user }}"
     group="{{ influx_db_group }}"
-    mode=640
+    mode=0640
   when: influxdb_version|version_compare('0.9', '>=')
   notify:
     - restart influxdb
@@ -52,7 +52,7 @@
     dest="/etc/systemd/system/influxdb.service"
     owner="{{ influx_db_user }}"
     group="{{ influx_db_group }}"
-    mode=640
+    mode=0640
   when: use_systemd
 
 - command: systemctl daemon-reload
