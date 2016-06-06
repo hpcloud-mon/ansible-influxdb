@@ -22,3 +22,5 @@ download_tmp_dir: /opt/monasca_download_dir
 # matches user,group from package startup script
 influx_db_user: "influxdb"
 influx_db_group: "influxdb"
+
+influxdb_http_log_enabled: True
