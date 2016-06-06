@@ -1,4 +1,13 @@
 ---
+# Copyright 2015 FUJITSU LIMITED
+# file: tasks/install.yml
+
+- include: userGroup.yml
+
+- name: Create download directory
+  file: path="{{ download_tmp_dir }}" state=directory recurse=yes
+  when: not influxdb_use_apt
+
 - include: DebianInst.yml
   when: "ansible_os_family == 'Debian'"
 

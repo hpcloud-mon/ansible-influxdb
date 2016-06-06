@@ -1,10 +1,6 @@
-- name: apt install influxdb
+- name: Apt install influxdb
   apt: name=influxdb
   when: influxdb_use_apt
-
-- name: Create download directory
-  file: path="{{ download_tmp_dir }}" state=directory recurse=yes
-  when: not influxdb_use_apt
 
 - name: Fetch package
   get_url: url={{influxdb_deb_src_url}}/influxdb_{{ influxdb_version }}_amd64.deb
@@ -13,6 +9,15 @@
   until: get_url_result.state == 'file'
   retries: 5
   delay: 1
+  when: not influxdb_use_apt
+
+- name: Set owner and group for influxdb package
+  file:
+    path="{{ download_tmp_dir }}/influxdb_{{ influxdb_version }}_amd64.deb"
+    state=file
+    owner={{ influx_db_user }}
+    group={{ influx_db_group }}
+    mode=0640
   when: not influxdb_use_apt
 
 - name: Install package

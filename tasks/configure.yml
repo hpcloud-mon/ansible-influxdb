@@ -1,18 +1,33 @@
 ---
 - name: Update config
-  template: src=influxdb.conf.j2 dest=/etc/opt/influxdb/influxdb.conf
+  template:
+    src=influxdb.conf.j2
+    dest=/etc/opt/influxdb/influxdb.conf
+    owner="{{ influx_db_user }}"
+    group="{{ influx_db_group }}"
+    mode=0640
   when: influxdb_version|version_compare('0.9', '>=')
   notify:
     - restart influxdb
 
 - name: Prepare custom influxdb config
-  template: src=etc_default_influxdb.j2 dest=/etc/default/influxdb
+  template:
+    src=etc_default_influxdb.j2
+    dest=/etc/default/influxdb
+    owner="{{ influx_db_user }}"
+    group="{{ influx_db_group }}"
+    mode=0640
   when: influxdb_version|version_compare('0.9', '>=')
   notify:
     - restart influxdb
 
 - name: Copy ssl key
-  copy: dest={{influxdb_ssl_certificate}} src={{influxdb_ssl_certificate_src}} owner=influxdb group=root mode=0440
+  copy:
+    dest="{{ influxdb_ssl_certificate }}"
+    src="{{ influxdb_ssl_certificate_src }}"
+    owner="{{ influx_db_user }}"
+    group=root
+    mode=0440
   when: influxdb_ssl_certificate_src is defined
   notify:
     - restart influxdb
@@ -20,10 +35,25 @@
 - name: Detect if this is a systemd based system
   command: cat /proc/1/comm
   register: init
+
 - set_fact: use_systemd=True
   when: init.stdout == 'systemd'
 - set_fact: use_systemd=False
   when: init.stdout != 'systemd'
+
+- name: Check if service file for systemd has been created
+  stat: path="/etc/systemd/system/influxdb.service"
+  register: influxdb_service
+  when: use_systemd
+
+- name: Copy systemd service file if does not exits
+  template:
+    src="influxdb.service.j2"
+    dest="/etc/systemd/system/influxdb.service"
+    owner="{{ influx_db_user }}"
+    group="{{ influx_db_group }}"
+    mode=0640
+  when: use_systemd
 
 - command: systemctl daemon-reload
   when: use_systemd

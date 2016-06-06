@@ -83,7 +83,7 @@ reporting-disabled = false
   enabled = true
   bind-address = "{{ influxdb_bind_address | default('') }}:{{ influxdb_client_port }}"
   auth-enabled = false
-  log-enabled = true
+  log-enabled = {{ influxdb_http_log_enabled|lower|string }}
   write-tracing = false
   pprof-enabled = false
 

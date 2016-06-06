@@ -16,6 +16,7 @@ Install [InfluxDB](http://influxdb.org/) time series database
 ##Optional
 - influxdb_bind_address - address to be used for binding the influxdb ports. Default is to bind to all IP addresses.
 - run_mode - One of Deploy, Stop, Install, Start, or Use. The default is Deploy which will do Install, Configure, then Start.
+- influxdb_http_log_enabled - Should influxdb log http requests? Default to true.
 
 ### Clustering
 To enable clustering define `influxdb_peers` on all nodes.
